@@ -199,6 +199,10 @@ fun lz4#write()
 endfun
 
 " TODO(Yongwoon): Implement append function
+" TODO(Yongwoon): When reading, it should retrieve block size, HC, and all other
+"                 infomation that can be used in compression. Currently,
+"                 compression is done with default parameters which may be
+"                 different from the original file.
 " TODO(Yongwoon): Currently, writing abc.gz.lz4 does not work because gzip.vim
 "                 tries to read expand("<afile>") which is abc.gz instead of
 "                 expand("%") which is abc.gz.lz4. I cannot make abc.gz because
