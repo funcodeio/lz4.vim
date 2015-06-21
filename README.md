@@ -1,5 +1,5 @@
 # lz4.vim
-A vim plugin for reading and writing a [lz4] format file.
+A vim plugin for reading and writing [lz4] frame files.
 [lz4]: https://github.com/Cyan4973/lz4
 
 This plugin enables you to see the original content of lz4-compressed file, and to modify it. When you read a lz4-compressed file, the plugin decompresses it internally and paste the result into the window. And, when you write a file whose extension is lz4, the plugin writes compressed string to the file.
