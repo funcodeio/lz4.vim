@@ -14,9 +14,10 @@
 "   Last Change: 2008 Jul 04
 "
 
-" Use lz4c instead of lz4 because the old version of lz4tools might not have
-" 'lz4' binary.
-let s:lz4_bin = "lz4c"
+" Add `lz4c` in binary search list
+" because the old version of lz4tools might not have 'lz4' binary.
+let s:lz4_bin_list = [ "lz4", "lz4c" ]
+let s:lz4_bin = s:lz4_bin_list[0]
 
 fun s:filename_escape(name)
   if exists('*fnameescape')
@@ -36,15 +37,33 @@ endfun
 " Function to check that executing "cmd -V" works.
 " The result is cached in s:have_"cmd" for speed.
 fun s:lz4_exists()
-  if !exists("s:have_" . s:lz4_bin)
-    let e = executable(s:lz4_bin)
-    if e < 0
-      let r = system(s:lz4_bin . " -V")
-      let e = (r !~ "not found" && r != "")
-    endif
-    exe "let s:have_" . s:lz4_bin . "=" . e
+  let l:cmd = "lz4"
+
+  let l:e = 0
+  if exists("s:have_" . l:cmd)
+    exe "let l:e = s:have_" . l:cmd
   endif
-  exe "return s:have_" . s:lz4_bin
+
+  if l:e <= 0
+    let l:bin = ""
+    for l:bin in s:lz4_bin_list
+      let l:e = executable(l:bin)
+      if l:e < 0
+        let r = system(l:bin . " -V")
+        let l:e = (r !~ "not found" && r != "")
+      endif
+
+      if l:e > 0
+        let s:lz4_bin = l:bin
+        break
+      endif
+    endfor
+    unlet l:bin
+
+    exe "let s:have_" . l:cmd . "=" . l:e
+  endif
+
+  exe "return s:have_" . l:cmd
 endfun
 
 fun s:silent_exe(cmd)
