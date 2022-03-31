@@ -179,7 +179,7 @@ fun lz4#write()
   endif
 
   " Rename the file before compressing it.
-  let write_file = resolve(expand("%"))
+  let write_file = resolve(expand("<afile>"))
   let tmp_file = tempname()
   let write_file_shell = s:shell_escape(write_file)
   let tmp_file_shell = s:shell_escape(tmp_file)
